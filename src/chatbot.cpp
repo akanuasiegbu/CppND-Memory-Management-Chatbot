@@ -45,6 +45,93 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 
+// Copy Constructor
+ChatBot::ChatBot(const ChatBot & source){
+        std::cout << "ChatBot Copy Constructor" << std::endl;
+        
+
+        _image = new wxBitmap(*source._image);
+
+        // Since currentnode, rorrtnode, chatlogic are not owned
+        // by the Chatbot object should be able to point to something else shallow copy
+        _currentNode = source._currentNode;
+        _rootNode = source._rootNode;
+        _chatLogic = source._chatLogic;
+
+        // source._image= NULL; Not needed for deep copy
+
+        // Since not owned copy even if shallow should be enough, I would think
+        // source._currentNode=nullptr;
+        // source._rootNode = nullptr;
+        // source._chatLogic = nullptr;
+}
+
+// Copy Assignment
+ChatBot & ChatBot::operator=( const ChatBot & source){
+
+        std::cout << "ChatBot Copy Assignment" << std::endl;
+
+        //self assigment protection
+        if (this == &source) return *this;
+        _image = new wxBitmap(*source._image);
+        
+        
+        // Since currentnode, rorrtnode, chatlogic are not owned
+        // by the Chatbot object should be able to point to something else shallow copy
+        _currentNode = source._currentNode;
+        _rootNode = source._rootNode;
+        _chatLogic = source._chatLogic;
+
+        // source._image = NULL; //Not needed for deep copy
+
+        // Since not owned copy even if shallow should be enough, I would think
+        // source._currentNode = nullptr;
+        // source._rootNode = nullptr;
+        // source._chatLogic = nullptr;
+
+        return *this;
+
+}
+
+// Move Constructor
+ChatBot::ChatBot(ChatBot && source){
+        std::cout << "ChatBot Move constructor" << std::endl;
+
+        delete _image;
+        _image = source._image; // declared in header still
+
+        _currentNode = source._currentNode;
+        _rootNode = source._rootNode;
+        _chatLogic = source._chatLogic;
+
+        source._image= NULL; // Attention: wxWidgets used NULL and not nullptr
+        source._currentNode =nullptr;
+        source._rootNode = nullptr;
+        source._chatLogic = nullptr;
+}
+
+// Move Assignment
+ChatBot & ChatBot::operator=(ChatBot && source){
+
+        std::cout << "ChatBot Move Assignment" << std::endl;
+        
+        // self assigment protection
+        if (this == &source ) return *this;
+        
+        delete _image;
+        _image = source._image; // declared in header still
+
+        _currentNode = source._currentNode;
+        _rootNode = source._rootNode;
+        _chatLogic = source._chatLogic;
+
+        source._image = NULL; // Attention: wxWidgets used NULL and not nullptr
+        source._currentNode = nullptr;
+        source._rootNode = nullptr;
+        source._chatLogic = nullptr;
+
+        return *this;
+}
 ////
 //// EOF STUDENT CODE
 
