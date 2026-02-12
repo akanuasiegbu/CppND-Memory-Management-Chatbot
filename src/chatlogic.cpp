@@ -44,12 +44,13 @@ ChatLogic::~ChatLogic()
     // }
 
     // delete all edges
-    for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
-    {
-        // deference iter to get pointer
-        delete *it;
-        *it = nullptr ;
-    }
+    // didnt need to use _edges
+    // for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
+    // {
+    //     // deference iter to get pointer
+    //     delete *it;
+    //     *it = nullptr ;
+    // }
 
     ////
     //// EOF STUDENT CODE
@@ -172,17 +173,21 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](std::unique_ptr<GraphNode>& node) { return node->GetID() == std::stoi(childToken->second); });
 
                             // create new edge
-                            GraphEdge *edge = new GraphEdge(id);
+                            // GraphEdge *edge = new GraphEdge(id);
+                            std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
                             edge->SetChildNode((*childNode).get()); // Since unique_ptr need to get pointer address
                             edge->SetParentNode((*parentNode).get()); // Since unique_ptr need to get pointer address
-                            _edges.push_back(edge);
+                            // _edges.push_back(edge);
+                            // If I kept line above would have a pointer here
+                            // and then would create a smart pointer below, two areas
+                            // once 
 
                             // find all keywords for current node
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
 
                             // store reference in child node and parent node
-                            (*childNode)->AddEdgeToParentNode(edge);
-                            (*parentNode)->AddEdgeToChildNode(edge);
+                            (*childNode)->AddEdgeToParentNode(edge.get()); // not owned
+                            (*parentNode)->AddEdgeToChildNode(std::move(edge)); //owned
                         }
 
                         ////
