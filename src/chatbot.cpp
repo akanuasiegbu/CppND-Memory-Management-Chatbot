@@ -113,7 +113,7 @@ ChatBot::ChatBot(ChatBot && source){
 // Move Assignment
 ChatBot & ChatBot::operator=(ChatBot && source){
 
-        std::cout << "ChatBot Move Assignment" << std::endl;
+        std::cout << "ChatBot Move Assignment Operator" << std::endl;
         
         // self assigment protection
         if (this == &source ) return *this;

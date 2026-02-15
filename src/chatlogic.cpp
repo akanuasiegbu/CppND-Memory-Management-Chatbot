@@ -235,7 +235,14 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
     // add chatbot to graph root node
     _chatBot->SetRootNode(rootNode);
-    rootNode->MoveChatbotHere(_chatBot);
+
+    // creates a local variable that on stack init
+    // with the chatBot from above
+    std::unique_ptr<ChatBot> local_chatbot {_chatBot};
+
+    // rootNode->MoveChatbotHere(_chatBot);
+    // pass the unique pointer using move semantics here, ownership transferred
+    rootNode->MoveChatbotHere(std::move(local_chatbot));
     
     ////
     //// EOF STUDENT CODE
