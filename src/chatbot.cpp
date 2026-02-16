@@ -46,11 +46,11 @@ ChatBot::~ChatBot()
 ////
     // Copy Constructor
     ChatBot::ChatBot(const ChatBot & source){
-        // Deep Copy
         std::cout << "ChatBot Copy Constructor" << std::endl;
 
-        delete _image;
+        // delete _image; constructor inits it
 
+        // Deep Copy
         _image = new wxBitmap(*source._image);
 
         _currentNode = source._currentNode;
@@ -62,14 +62,25 @@ ChatBot::~ChatBot()
     }
 
     ChatBot& ChatBot::operator=(const ChatBot & source){
-        std::cout << "ChatBot Copy Assignment Operator" << std::endl;
 
         if (this == &source )
             return *this;
 
-        delete _image;
+        std::cout << "ChatBot Copy Assignment Operator" << std::endl;
+
+        if (_image != NULL){ // if not empty delete before move as chatbot owns it
+            delete _image;
+            _image = NULL;
+        }
+
+        // Deep Copy
         _image = new wxBitmap(*source._image);
 
+
+        _currentNode = source._currentNode;
+        _chatLogic = source._chatLogic;
+        _rootNode = source._rootNode;
+        
         _currentNode = source._currentNode;
         _chatLogic = source._chatLogic;
         _rootNode = source._rootNode;
@@ -82,7 +93,7 @@ ChatBot::~ChatBot()
         
         std::cout << "ChatBot Move Constructor" << std::endl;
 
-        delete _image;
+        // delete _image; // Constructor init it
 
         _image = source._image;
 
@@ -106,7 +117,11 @@ ChatBot::~ChatBot()
         if (this == &source)
             return *this;
 
-        delete _image;
+
+        if (_image != NULL){ // if not empty delete before move as chatbot owns it
+            delete _image; 
+            _image = NULL;
+        }
 
         _image = source._image;
 
