@@ -33,7 +33,7 @@ ChatLogic::~ChatLogic()
     ////
 
     // delete chatbot instance
-    delete _chatBot;
+    // delete _chatBot;
     
     // since using unique pointer will clean up by itself
     // when vector deletes from stack
